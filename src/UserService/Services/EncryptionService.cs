@@ -1,3 +1,5 @@
+using UserService.Services.Interfaces;
+
 namespace backend.Services;
 
 public class EncryptionService : IEncryptionService
