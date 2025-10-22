@@ -1,4 +1,5 @@
 using Backend.DTOs.UserDTOs;
+using UserService.DTOs.UserDataDTOs;
 using UserService.Models.Entities;
 
 namespace UserService.Extensions;

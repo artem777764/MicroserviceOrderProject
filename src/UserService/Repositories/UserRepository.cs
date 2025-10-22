@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using UserService.Models.Context;
 using UserService.Models.Entities;
-using UserService.Repositories.interfaces;
+using UserService.Repositories.Interfaces;
 
 namespace UserService.Repositories;
 

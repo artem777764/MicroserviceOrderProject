@@ -44,8 +44,9 @@ public class ValidationService : IValidationService
         return NameRegex.IsMatch(name);
     }
 
-    public bool IsValidPatronymic(string patronymic)
+    public bool IsValidPatronymic(string? patronymic)
     {
+        if (patronymic == null) return true;
         return PatronymicRegex.IsMatch(patronymic);
     }
 }

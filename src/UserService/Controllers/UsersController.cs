@@ -1,5 +1,6 @@
 using Backend.DTOs.UserDTOs;
 using Microsoft.AspNetCore.Mvc;
+using UserService.DTOs.UserDataDTOs;
 using UserService.Services.Interfaces;
 
 namespace UserService.Controllers;

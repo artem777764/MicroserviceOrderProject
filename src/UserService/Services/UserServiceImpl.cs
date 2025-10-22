@@ -1,9 +1,10 @@
 using Backend.DTOs.UserDTOs;
 using UserService.DTOs;
+using UserService.DTOs.UserDataDTOs;
 using UserService.Extensions;
 using UserService.Models;
 using UserService.Models.Entities;
-using UserService.Repositories.interfaces;
+using UserService.Repositories.Interfaces;
 using UserService.Services.Interfaces;
 
 namespace UserService.Services;

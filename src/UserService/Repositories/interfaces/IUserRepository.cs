@@ -1,6 +1,6 @@
 using UserService.Models.Entities;
 
-namespace UserService.Repositories.interfaces;
+namespace UserService.Repositories.Interfaces;
 
 public interface IUserRepository
 {

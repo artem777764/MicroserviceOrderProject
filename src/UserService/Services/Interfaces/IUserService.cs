@@ -1,5 +1,6 @@
 using Backend.DTOs.UserDTOs;
 using UserService.DTOs;
+using UserService.DTOs.UserDataDTOs;
 
 namespace UserService.Services.Interfaces;
 

@@ -5,7 +5,7 @@ using Backend.Services;
 using Microsoft.EntityFrameworkCore;
 using UserService.Models.Context;
 using UserService.Repositories;
-using UserService.Repositories.interfaces;
+using UserService.Repositories.Interfaces;
 using UserService.Services;
 using UserService.Services.Interfaces;
 
@@ -33,8 +33,10 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IEncryptionService, EncryptionService>();
 
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserDataRepository, UserDataRepository>();
 
         services.AddScoped<IUserService, UserServiceImpl>();
+        services.AddScoped<IUserDataService, UserDataService>();
 
         services.AddControllers()
             .AddJsonOptions(options =>
