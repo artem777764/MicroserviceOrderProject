@@ -7,4 +7,5 @@ public interface IUserService
 {
     Task<ApiResponseDTO<IdDTO>> CreateUserAsync(CreateUserDTO createUserDTO);
     Task<ApiResponseDTO<GetUserDTO>> GetUserByIdAsync(Guid userId);
+    Task<ApiResponseDTO<List<GetUserDTO>>> GetAllAsync();
 }

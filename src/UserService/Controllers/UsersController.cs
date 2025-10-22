@@ -26,4 +26,10 @@ public class UsersController : ControllerBase
     {
         return Ok(await _userService.GetUserByIdAsync(userId));
     }
+
+    [HttpGet("")]
+    public async Task<IActionResult> GetUsersAsync()
+    {
+        return Ok(await _userService.GetAllAsync());
+    }
 }

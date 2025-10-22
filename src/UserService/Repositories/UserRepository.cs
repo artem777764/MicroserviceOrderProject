@@ -28,4 +28,12 @@ public class UserRepository : IUserRepository
                                    .ThenInclude(ur => ur.Role)
                                    .FirstOrDefaultAsync(u => u.Id == userId);
     }
+
+    public async Task<List<UserEntity>> GetAllAsync()
+    {
+        return _context.Users.Include(u => u.UserData)
+                             .Include(u => u.UserRoles)
+                             .ThenInclude(ur => ur.Role)
+                             .ToList();
+    }
 }
