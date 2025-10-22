@@ -21,4 +21,10 @@ public static class ResponseErrors
         Code = "USER_PASSWORD_NOT_VALID",
         Message = "Некорректный пароль",
     };
+
+    public static ErrorDTO UserNotFound() => new ErrorDTO
+    {
+        Code = "USER_NOT_FOUND",
+        Message = "Пользователь не найден",
+    };
 }

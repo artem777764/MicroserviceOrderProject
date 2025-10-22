@@ -20,4 +20,10 @@ public class UsersController : ControllerBase
     {
         return Ok(await _userService.CreateUserAsync(createUserDTO));
     }
+
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> GetUserByIdAsync([FromRoute] Guid userId)
+    {
+        return Ok(await _userService.GetUserByIdAsync(userId));
+    }
 }
