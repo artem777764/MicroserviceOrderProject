@@ -19,6 +19,16 @@ public static class ServiceCollectionExtensions
             opt.UseNpgsql(Environment.GetEnvironmentVariable("ApplicationDatabaseConnection")!
         ));
 
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+            {
+                Title = "Defect Managment Project API",
+                Version = "v1"
+            });
+        });
+
         services.AddScoped<IValidationService, ValidationService>();
         services.AddScoped<IEncryptionService, EncryptionService>();
 
@@ -44,10 +54,15 @@ public static class ServiceCollectionExtensions
     {
         if (app.Environment.IsDevelopment())
         {
-            app.MapOpenApi();
+            app.UseSwagger(); // http://localhost:5126/swagger/index.html
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Defect Managment Project API");
+            });
         }
 
         app.UseHttpsRedirection();
+        app.UseRouting();
         app.MapControllers();
 
         PrepareDb.PrepareDatabase(app);
