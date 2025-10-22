@@ -1,7 +1,14 @@
+using backend.Services;
 using Backend.Models;
+using Backend.Services;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
+using UserService.DTOs;
 using UserService.Models.Context;
+using UserService.Repositories;
+using UserService.Repositories.interfaces;
+using UserService.Services;
+using UserService.Services.Interfaces;
 
 Env.Load();
 
@@ -13,6 +20,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(opt =>
     )
 );
 
+builder.Services.AddScoped<IValidationService, ValidationService>();
+builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddScoped<IUserService, UserServiceImpl>();
+
+builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
@@ -23,6 +38,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.MapControllers();
 
 PrepareDb.PrepareDatabase(app);
 
