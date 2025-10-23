@@ -21,4 +21,28 @@ public static class ResponseErrors
         Code = "USER_PASSWORD_NOT_VALID",
         Message = "Некорректный пароль",
     };
+
+    public static ErrorDTO UserNotFound() => new ErrorDTO
+    {
+        Code = "USER_NOT_FOUND",
+        Message = "Пользователь не найден",
+    };
+
+    public static ErrorDTO UserSurnameNotValid() => new ErrorDTO
+    {
+        Code = "USER_SURNAME_NOT_VALID",
+        Message = "Некорректная фамилия",
+    };
+
+    public static ErrorDTO UserNameNotValid() => new ErrorDTO
+    {
+        Code = "USER_Name_NOT_VALID",
+        Message = "Некорректное имя",
+    };
+
+    public static ErrorDTO UserPatronymicNotValid() => new ErrorDTO
+    {
+        Code = "USER_PATRONYMIC_NOT_VALID",
+        Message = "Некорректное отчество",
+    };
 }

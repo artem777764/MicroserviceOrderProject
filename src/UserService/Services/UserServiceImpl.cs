@@ -1,9 +1,10 @@
 using Backend.DTOs.UserDTOs;
 using UserService.DTOs;
+using UserService.DTOs.UserDataDTOs;
 using UserService.Extensions;
 using UserService.Models;
 using UserService.Models.Entities;
-using UserService.Repositories.interfaces;
+using UserService.Repositories.Interfaces;
 using UserService.Services.Interfaces;
 
 namespace UserService.Services;
@@ -13,7 +14,6 @@ public class UserServiceImpl : IUserService
     private readonly IUserRepository _userRepository;
     private readonly IValidationService _validationService;
     private readonly IEncryptionService _encryptionService;
-    private readonly ApiResponseDTOBuilder<IdDTO> _apiResponseDTOBuilder;
 
     public UserServiceImpl(
         IUserRepository userRepository,
@@ -24,27 +24,27 @@ public class UserServiceImpl : IUserService
         _userRepository = userRepository;
         _validationService = validationService;
         _encryptionService = encryptionService;
-        _apiResponseDTOBuilder = new ApiResponseDTOBuilder<IdDTO>();
     }
 
     public async Task<ApiResponseDTO<IdDTO>> CreateUserAsync(CreateUserDTO createUserDTO)
     {
+        ApiResponseDTOBuilder<IdDTO> builder = new ApiResponseDTOBuilder<IdDTO>();
         if (!_validationService.IsValidEmail(createUserDTO.Email))
         {
-            _apiResponseDTOBuilder.SetError(ResponseErrors.UserEmailNotValid());
-            return _apiResponseDTOBuilder.Build();
+            builder.SetError(ResponseErrors.UserEmailNotValid());
+            return builder.Build();
         }
 
         if (!_validationService.IsValidLogin(createUserDTO.Login))
         {
-            _apiResponseDTOBuilder.SetError(ResponseErrors.UserLoginNotValid());
-            return _apiResponseDTOBuilder.Build();
+            builder.SetError(ResponseErrors.UserLoginNotValid());
+            return builder.Build();
         }
 
         if (!_validationService.IsValidPassword(createUserDTO.Password))
         {
-            _apiResponseDTOBuilder.SetError(ResponseErrors.UserPasswordNotValid());
-            return _apiResponseDTOBuilder.Build();
+            builder.SetError(ResponseErrors.UserPasswordNotValid());
+            return builder.Build();
         }
 
         string passwordHash = _encryptionService.HashPassword(createUserDTO.Password);
@@ -52,8 +52,34 @@ public class UserServiceImpl : IUserService
         Guid userId = await _userRepository.CreateUserAsync(userEntity);
         IdDTO idDto = new IdDTO() { Id = userId };
 
-        return _apiResponseDTOBuilder.SetData(idDto)
-                                     .SetSuccessful()
-                                     .Build();
+        return builder.SetData(idDto)
+                      .SetSuccessful()
+                      .Build();
+    }
+
+    public async Task<ApiResponseDTO<GetUserDTO>> GetUserByIdAsync(Guid userId)
+    {
+        ApiResponseDTOBuilder<GetUserDTO> builder = new ApiResponseDTOBuilder<GetUserDTO>();
+
+        UserEntity? userEntity = await _userRepository.GetByIdAsync(userId);
+        if (userEntity == null)
+        {
+            builder.SetError(ResponseErrors.UserNotFound());
+            return builder.Build();
+        }
+
+        return builder.SetData(userEntity.ToDTO())
+                      .SetSuccessful()
+                      .Build();
+    }
+
+    public async Task<ApiResponseDTO<List<GetUserDTO>>> GetAllAsync()
+    {
+        ApiResponseDTOBuilder<List<GetUserDTO>> builder = new ApiResponseDTOBuilder<List<GetUserDTO>>();
+
+        List<UserEntity> userEntities = await _userRepository.GetAllAsync();
+        return builder.SetData(userEntities.Select(ue => ue.ToDTO()).ToList())
+                      .SetSuccessful()
+                      .Build();
     }
 }

@@ -1,5 +1,6 @@
 using Backend.DTOs.UserDTOs;
 using Microsoft.AspNetCore.Mvc;
+using UserService.DTOs.UserDataDTOs;
 using UserService.Services.Interfaces;
 
 namespace UserService.Controllers;
@@ -19,5 +20,17 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserDTO createUserDTO)
     {
         return Ok(await _userService.CreateUserAsync(createUserDTO));
+    }
+
+    [HttpGet("{userId}")]
+    public async Task<IActionResult> GetUserByIdAsync([FromRoute] Guid userId)
+    {
+        return Ok(await _userService.GetUserByIdAsync(userId));
+    }
+
+    [HttpGet("")]
+    public async Task<IActionResult> GetUsersAsync()
+    {
+        return Ok(await _userService.GetAllAsync());
     }
 }
