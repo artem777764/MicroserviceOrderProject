@@ -36,7 +36,7 @@ public static class ResponseErrors
 
     public static ErrorDTO UserNameNotValid() => new ErrorDTO
     {
-        Code = "USER_Name_NOT_VALID",
+        Code = "USER_NAME_NOT_VALID",
         Message = "Некорректное имя",
     };
 

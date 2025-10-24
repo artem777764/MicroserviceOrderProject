@@ -23,17 +23,39 @@ public class UserRepository : IUserRepository
 
     public async Task<UserEntity?> GetByIdAsync(Guid userId)
     {
-        return await _context.Users.Include(u => u.UserData)
-                                   .Include(u => u.UserRoles)
-                                   .ThenInclude(ur => ur.Role)
-                                   .FirstOrDefaultAsync(u => u.Id == userId);
+        return await BuildDefectsQuery().FirstOrDefaultAsync(u => u.Id == userId);
+    }
+
+    public async Task<UserEntity?> GetByEmailAsync(string email)
+    {
+        return await BuildDefectsQuery().FirstOrDefaultAsync(u => u.Email == email);
+    }
+
+    public async Task<UserEntity?> GetByLoginAsync(string login)
+    {
+        return await BuildDefectsQuery().FirstOrDefaultAsync(u => u.Login == login);
     }
 
     public async Task<List<UserEntity>> GetAllAsync()
     {
+        return await BuildDefectsQuery().ToListAsync();
+    }
+
+    public async Task<bool> IsEmailExist(string email)
+    {
+        return await _context.Users.AnyAsync(u => u.Email == email);
+    }
+
+    public async Task<bool> IsLoginExist(string login)
+    {
+        return await _context.Users.AnyAsync(u => u.Login == login);
+    }
+
+    private IQueryable<UserEntity> BuildDefectsQuery()
+    {
         return _context.Users.Include(u => u.UserData)
                              .Include(u => u.UserRoles)
                              .ThenInclude(ur => ur.Role)
-                             .ToList();
+                             .AsNoTracking();
     }
 }
