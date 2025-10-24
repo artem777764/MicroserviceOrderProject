@@ -3,6 +3,7 @@ using backend.Services;
 using Backend.Models;
 using Backend.Services;
 using Microsoft.EntityFrameworkCore;
+using UserService.Models;
 using UserService.Models.Context;
 using UserService.Repositories;
 using UserService.Repositories.Interfaces;
@@ -13,7 +14,7 @@ namespace Backend.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+    public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationDbContext>(opt =>
             opt.UseNpgsql(Environment.GetEnvironmentVariable("ApplicationDatabaseConnection")!
@@ -29,8 +30,12 @@ public static class ServiceCollectionExtensions
             });
         });
 
+        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+
         services.AddScoped<IValidationService, ValidationService>();
         services.AddScoped<IEncryptionService, EncryptionService>();
+        services.AddScoped<IJwtService, JwtService>();
+        services.AddScoped<JwtCookieService>();
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserDataRepository, UserDataRepository>();
