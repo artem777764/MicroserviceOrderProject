@@ -61,4 +61,11 @@ public class UsersController : ControllerBase
         await _userService.RemoveByIdAsync(id);
         return Ok();
     }
+
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Delete(_jwtCookieService.CookieName, _jwtCookieService.GetAuthCookieOptions(true));
+        return Ok();
+    }
 }

@@ -6,9 +6,12 @@ namespace Backend.Services;
 public class JwtCookieService
 {
     private readonly int _expireHours;
+    private readonly string _jwtCookieName;
+    
     public JwtCookieService(IOptions<JwtSettings> options)
     {
         _expireHours = options.Value.ExpireHours;
+        _jwtCookieName = options.Value.JwtCookieName;
     }
 
     public CookieOptions GetAuthCookieOptions(bool expired = false)
@@ -25,4 +28,6 @@ public class JwtCookieService
             Expires = expires,
         };
     }
+
+    public string CookieName => _jwtCookieName;
 }
