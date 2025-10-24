@@ -4,9 +4,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
-var app = builder.Build();
+builder.Services.AddApplicationServices(builder.Configuration);
 
-builder.Services.AddApplicationServices();
+var app = builder.Build();
 
 app.ConfigureApplication();
 
