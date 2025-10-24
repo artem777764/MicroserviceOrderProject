@@ -11,4 +11,5 @@ public interface IUserService
     Task<ApiResponseDTO<GetUserDTO>> GetUserByIdAsync(Guid userId);
     Task<ApiResponseDTO<List<GetUserDTO>>> GetAllAsync();
     Task<ApiResponseDTO<GetLoginUserDTO>> LoginUserAsync(LoginDTO loginDTO);
+    Task RemoveByIdAsync(Guid userId);
 }

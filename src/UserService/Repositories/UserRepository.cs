@@ -58,4 +58,11 @@ public class UserRepository : IUserRepository
                              .ThenInclude(ur => ur.Role)
                              .AsNoTracking();
     }
+
+    public async Task RemoveByIdAsync(Guid userId)
+    {
+        UserEntity? userEntity = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        if (userEntity != null) _context.Users.Remove(userEntity);
+        await _context.SaveChangesAsync();
+    }
 }
