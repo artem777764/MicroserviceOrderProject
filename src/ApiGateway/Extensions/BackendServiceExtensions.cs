@@ -12,6 +12,16 @@ public static class ServiceCollectionExtensions
     {
         services.AddSingleton(GetTokenValidationParameters(configuration));
         services.AddReverseProxy().LoadFromConfig(configuration.GetSection("ReverseProxy"));
+
+        services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+                options.JsonSerializerOptions.WriteIndented = false;
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            });
+
         services.AddOpenApi();
         return services;
     }
@@ -25,6 +35,8 @@ public static class ServiceCollectionExtensions
         app.UseMiddleware<GatewayAuthorizationMiddleware>();
         app.MapReverseProxy();
         app.UseHttpsRedirection();
+        app.UseRouting();
+        app.MapControllers();
         return app;
     }
     
