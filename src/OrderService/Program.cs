@@ -1,4 +1,7 @@
+using DotNetEnv;
 using OrderService.Extensions;
+
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
