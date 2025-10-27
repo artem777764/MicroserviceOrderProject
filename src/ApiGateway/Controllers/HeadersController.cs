@@ -15,8 +15,8 @@ namespace ApiGateway.Controllers
                 "Gateway-Auth-Reason",
                 "Gateway-User-Id",
                 "Gateway-Auth-Jti",
-                "Gateway-User-Roles",
-                "Gateway-Role-Ids",
+                "Gateway-User-Role-Ids",
+                "Gateway-User-Role-Names",
                 "Gateway-Active-Role-Id",
                 "Gateway-Active-Role-Name",
             ];

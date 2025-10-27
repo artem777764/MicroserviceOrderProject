@@ -10,7 +10,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddSingleton(GetTokenValidationParameters(configuration));
+        JwtSettings jwt = configuration.GetSection("JwtSettings").Get<JwtSettings>()!;
+        services.AddSingleton(jwt);
         services.AddReverseProxy().LoadFromConfig(configuration.GetSection("ReverseProxy"));
 
         services.AddControllers()
@@ -38,24 +39,5 @@ public static class ServiceCollectionExtensions
         app.UseRouting();
         app.MapControllers();
         return app;
-    }
-    
-    private static TokenValidationParameters GetTokenValidationParameters(IConfiguration configuration)
-    {
-        JwtSettings jwt = configuration.GetSection("JwtSettings").Get<JwtSettings>()!;
-        SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.SecretKey));
-        return new TokenValidationParameters()
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = key,
-
-            ValidateIssuer = true,
-            ValidIssuer = jwt.Issuer,
-
-            ValidateAudience = true,
-            ValidAudience = jwt.Audience,
-
-            ValidateLifetime = true,
-        };
     }
 }
