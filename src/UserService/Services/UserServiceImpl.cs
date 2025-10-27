@@ -94,6 +94,8 @@ public class UserServiceImpl : IUserService
                                     .Build();
     }
 
+    
+
     public async Task<ApiResponseDTO<GetUserDTO>> GetUserByIdAsync(Guid userId)
     {
         ApiResponseDTOBuilder<GetUserDTO> builder = new ApiResponseDTOBuilder<GetUserDTO>();
