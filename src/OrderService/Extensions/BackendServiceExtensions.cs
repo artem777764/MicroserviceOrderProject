@@ -1,4 +1,7 @@
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using OrderService.Models;
+using OrderService.Models.Context;
 
 namespace OrderService.Extensions;
 
@@ -6,6 +9,10 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddDbContext<ApplicationDbContext>(opt =>
+            opt.UseNpgsql(Environment.GetEnvironmentVariable("ApplicationDatabaseConnection")!
+        ));
+
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
@@ -44,6 +51,8 @@ public static class ServiceCollectionExtensions
         app.UseHttpsRedirection();
         app.UseRouting();
         app.MapControllers();
+
+        PrepareDb.PrepareDatabase(app);
 
         return app;
     }
