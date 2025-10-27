@@ -145,4 +145,9 @@ public class UserServiceImpl : IUserService
                       .SetSuccessful()
                       .Build();
     }
+
+    public async Task RemoveByIdAsync(Guid userId)
+    {
+        await _userRepository.RemoveByIdAsync(userId);
+    }
 }

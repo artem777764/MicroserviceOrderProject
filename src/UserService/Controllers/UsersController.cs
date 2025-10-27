@@ -70,4 +70,18 @@ public class UsersController : ControllerBase
     {
         return Ok(await _userService.GetAllAsync());
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> RemoveUserAsync([FromRoute] Guid id)
+    {
+        await _userService.RemoveByIdAsync(id);
+        return Ok();
+    }
+
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        Response.Cookies.Delete(_jwtCookieService.CookieName, _jwtCookieService.GetAuthCookieOptions(true));
+        return Ok();
+    }
 }

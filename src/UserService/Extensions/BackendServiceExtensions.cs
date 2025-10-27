@@ -39,9 +39,11 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserDataRepository, UserDataRepository>();
+        services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 
         services.AddScoped<IUserService, UserServiceImpl>();
         services.AddScoped<IUserDataService, UserDataService>();
+        services.AddScoped<IUserRoleService, UserRoleService>();
 
         services.AddControllers()
             .AddJsonOptions(options =>

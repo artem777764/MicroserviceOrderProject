@@ -11,5 +11,5 @@ public interface IUserRepository
     Task<UserEntity?> GetByLoginAsync(string login);
     Task<bool> IsEmailExist(string email);
     Task<bool> IsLoginExist(string login);
-    
+    Task RemoveByIdAsync(Guid userId);
 }
