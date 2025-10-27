@@ -43,6 +43,22 @@ public class UsersController : ControllerBase
         return Ok(apiResponseDTO);
     }
 
+    [GatewayAuthorize]
+    [HttpPost("login/role")]
+    public async Task<IActionResult> SetRoleAsync([FromQuery] Guid roleId)
+    {
+        string userId = HttpContext.Request.Headers["Gateway-User-Id"].FirstOrDefault()!;
+        ApiResponseDTO<GetLoginUserDTO> apiResponseDTO = await _userService.SetRoleAsync(Guid.Parse(userId), roleId);
+        if (!apiResponseDTO.Success) return Ok(apiResponseDTO);
+
+        Response.Cookies.Append(
+            apiResponseDTO.Data!.JwtCookieName!,
+            apiResponseDTO.Data!.JwtToken!,
+            _jwtCookieService.GetAuthCookieOptions());
+
+        return Ok(apiResponseDTO);
+    }
+
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetUserByIdAsync([FromRoute] Guid userId)
     {

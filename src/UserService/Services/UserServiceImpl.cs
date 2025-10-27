@@ -94,6 +94,32 @@ public class UserServiceImpl : IUserService
                                     .Build();
     }
 
+    public async Task<ApiResponseDTO<GetLoginUserDTO>> SetRoleAsync(Guid userId, Guid roleId)
+    {
+        ApiResponseDTOBuilder<GetLoginUserDTO> apiResponseDTOBuilder = new ApiResponseDTOBuilder<GetLoginUserDTO>();
+
+        UserEntity? userEntity = await _userRepository.GetByIdAsync(userId);
+        if (userEntity == null)
+        {
+            apiResponseDTOBuilder.SetError(ResponseErrors.UserNotFound());
+            return apiResponseDTOBuilder.Build();
+        }
+
+        string jwtToken = _jwtService.GenerateToken(userEntity, roleId);
+        string JwtCookieName = _jwtService.GetJwtCookieName();
+
+        GetLoginUserDTO getLoginUserDTO = new GetLoginUserDTO()
+        {
+            UserId = userEntity.Id,
+            JwtToken = jwtToken,
+            JwtCookieName = JwtCookieName,
+        };
+
+        return apiResponseDTOBuilder.SetData(getLoginUserDTO)
+                                    .SetSuccessful()
+                                    .Build();
+    }
+
     public async Task<ApiResponseDTO<GetUserDTO>> GetUserByIdAsync(Guid userId)
     {
         ApiResponseDTOBuilder<GetUserDTO> builder = new ApiResponseDTOBuilder<GetUserDTO>();
