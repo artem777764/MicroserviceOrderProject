@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using UserService.DTOs;
+using UserService.Models;
 
 public class GatewayAuthorizeAttribute : Attribute, IAuthorizationFilter
 {
@@ -7,14 +9,17 @@ public class GatewayAuthorizeAttribute : Attribute, IAuthorizationFilter
     {
         HttpContext httpContext = context.HttpContext;
         string? isValid = httpContext.Request.Headers["Gateway-Auth-Valid"].FirstOrDefault();
-        string? reason = httpContext.Request.Headers["Gateway-Auth-Reason"].FirstOrDefault();
 
         if (isValid != "true")
         {
-            context.Result = new JsonResult(new { error = "Unauthorized", reason = reason })
+            ApiResponseNoDataDTOBuilder apiResponseNoDataDTOBuilder = new ApiResponseNoDataDTOBuilder();
+            apiResponseNoDataDTOBuilder.SetError(ResponseErrors.Unauthorized());
+
+            context.Result = new JsonResult(apiResponseNoDataDTOBuilder.Build())
             {
                 StatusCode = StatusCodes.Status401Unauthorized
             };
+            return;
         }
     }
 }

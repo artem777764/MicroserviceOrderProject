@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using UserService.DTOs;
+using UserService.Models;
 
 public class GatewayAuthorizeByRolesAttribute : Attribute, IAuthorizationFilter
 {
     private readonly List<string> _requiredRoles;
 
-    public GatewayAuthorizeByRolesAttribute(params List<string> roles)
+    public GatewayAuthorizeByRolesAttribute(params string[] roles)
     {
-        _requiredRoles = roles;
+        _requiredRoles = roles.ToList();
     }
 
     public void OnAuthorization(AuthorizationFilterContext context)
@@ -17,7 +19,10 @@ public class GatewayAuthorizeByRolesAttribute : Attribute, IAuthorizationFilter
 
         if (isValid != "true")
         {
-            context.Result = new JsonResult(new { error = "Unauthorized" })
+            ApiResponseNoDataDTOBuilder apiResponseNoDataDTOBuilder = new ApiResponseNoDataDTOBuilder();
+            apiResponseNoDataDTOBuilder.SetError(ResponseErrors.Unauthorized());
+
+            context.Result = new JsonResult(apiResponseNoDataDTOBuilder.Build())
             {
                 StatusCode = StatusCodes.Status401Unauthorized
             };
@@ -28,10 +33,14 @@ public class GatewayAuthorizeByRolesAttribute : Attribute, IAuthorizationFilter
         bool hasRequiredRole = _requiredRoles.Any(requiredRole => userRoles.Contains(requiredRole));
         if (!hasRequiredRole)
         {
-            context.Result = new JsonResult(new { error = "Forbidden", message = "Insufficient permissions" })
+            ApiResponseNoDataDTOBuilder apiResponseNoDataDTOBuilder = new ApiResponseNoDataDTOBuilder();
+            apiResponseNoDataDTOBuilder.SetError(ResponseErrors.Forbidden());
+
+            context.Result = new JsonResult(apiResponseNoDataDTOBuilder.Build())
             {
                 StatusCode = StatusCodes.Status403Forbidden
             };
+            return;
         }
     }
 }

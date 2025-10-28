@@ -45,4 +45,16 @@ public static class ResponseErrors
         Code = "USER_PATRONYMIC_NOT_VALID",
         Message = "Некорректное отчество",
     };
+
+    public static ErrorDTO Unauthorized() => new ErrorDTO
+    {
+        Code = "UNAUTHORIZED",
+        Message = "Пользователь не авторизован",
+    };
+
+    public static ErrorDTO Forbidden() => new ErrorDTO
+    {
+        Code = "FORBIDDEN",
+        Message = "Пользователь не имеет необходимой роли",
+    };
 }
