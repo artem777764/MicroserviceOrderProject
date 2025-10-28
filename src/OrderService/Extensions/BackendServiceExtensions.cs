@@ -2,6 +2,10 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Models;
 using OrderService.Models.Context;
+using OrderService.Repositories.Interfaces;
+using OrderService.Services;
+using OrderService.Services.Interfaces;
+using UserService.Repositories;
 
 namespace OrderService.Extensions;
 
@@ -31,6 +35,12 @@ public static class ServiceCollectionExtensions
                 options.JsonSerializerOptions.WriteIndented = false;
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
+        
+        services.AddScoped<IValidationService, ValidationService>();
+
+        services.AddScoped<IItemRepository, ItemRepository>();
+        
+        services.AddScoped<IItemService, ItemService>();
 
         services.AddOpenApi();
 
