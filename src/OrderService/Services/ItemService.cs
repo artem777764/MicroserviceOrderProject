@@ -24,7 +24,7 @@ public class ItemService : IItemService
         ApiResponseDTOBuilder<IdDTO> builder = new ApiResponseDTOBuilder<IdDTO>();
         if (!_validationService.IsValidProductName(createItemDTO.Name))
         {
-            builder.SetError(ResponseErrors.ProductNameNotValid());
+            builder.SetError(ResponseErrors.ItemNameNotValid());
             return builder.Build();
         }
 
@@ -36,95 +36,40 @@ public class ItemService : IItemService
                       .SetSuccessful()
                       .Build();
     }
-    /*
-    public async Task<ApiResponseDTO<GetLoginUserDTO>> LoginUserAsync(LoginDTO loginDTO)
+    
+    public async Task<ApiResponseDTO<GetItemDTO>> GetItemByIdAsync(Guid itemId)
     {
-        ApiResponseDTOBuilder<GetLoginUserDTO> apiResponseDTOBuilder = new ApiResponseDTOBuilder<GetLoginUserDTO>();
+        ApiResponseDTOBuilder<GetItemDTO> builder = new ApiResponseDTOBuilder<GetItemDTO>();
 
-        UserEntity? userEntity = await _userRepository.GetByEmailAsync(loginDTO.UserName);
-        if (userEntity == null) userEntity = await _userRepository.GetByLoginAsync(loginDTO.UserName);
-        if (userEntity == null)
+        ItemEntity? itemEntity = await _itemRepository.GetByIdAsync(itemId);
+        if (itemEntity == null)
         {
-            apiResponseDTOBuilder.SetError(ResponseErrors.UserNotFound());
-            return apiResponseDTOBuilder.Build();
-        }
-
-        if (!_encryptionService.VerifyPassword(loginDTO.Password, userEntity!.PasswordHash))
-        {
-            apiResponseDTOBuilder.SetError(ResponseErrors.UserPasswordNotValid());
-            return apiResponseDTOBuilder.Build();
-        }
-
-        string jwtToken = _jwtService.GenerateToken(userEntity);
-        string JwtCookieName = _jwtService.GetJwtCookieName();
-
-        GetLoginUserDTO getLoginUserDTO = new GetLoginUserDTO()
-        {
-            UserId = userEntity.Id,
-            JwtToken = jwtToken,
-            JwtCookieName = JwtCookieName,
-        };
-
-        return apiResponseDTOBuilder.SetData(getLoginUserDTO)
-                                    .SetSuccessful()
-                                    .Build();
-    }
-
-    public async Task<ApiResponseDTO<GetLoginUserDTO>> SetRoleAsync(Guid userId, Guid roleId)
-    {
-        ApiResponseDTOBuilder<GetLoginUserDTO> apiResponseDTOBuilder = new ApiResponseDTOBuilder<GetLoginUserDTO>();
-
-        UserEntity? userEntity = await _userRepository.GetByIdAsync(userId);
-        if (userEntity == null)
-        {
-            apiResponseDTOBuilder.SetError(ResponseErrors.UserNotFound());
-            return apiResponseDTOBuilder.Build();
-        }
-
-        string jwtToken = _jwtService.GenerateToken(userEntity, roleId);
-        string JwtCookieName = _jwtService.GetJwtCookieName();
-
-        GetLoginUserDTO getLoginUserDTO = new GetLoginUserDTO()
-        {
-            UserId = userEntity.Id,
-            JwtToken = jwtToken,
-            JwtCookieName = JwtCookieName,
-        };
-
-        return apiResponseDTOBuilder.SetData(getLoginUserDTO)
-                                    .SetSuccessful()
-                                    .Build();
-    }
-
-    public async Task<ApiResponseDTO<GetUserDTO>> GetUserByIdAsync(Guid userId)
-    {
-        ApiResponseDTOBuilder<GetUserDTO> builder = new ApiResponseDTOBuilder<GetUserDTO>();
-
-        UserEntity? userEntity = await _userRepository.GetByIdAsync(userId);
-        if (userEntity == null)
-        {
-            builder.SetError(ResponseErrors.UserNotFound());
+            builder.SetError(ResponseErrors.ItemNotFound());
             return builder.Build();
         }
 
-        return builder.SetData(userEntity.ToDTO())
+        return builder.SetData(itemEntity.ToDTO())
                       .SetSuccessful()
                       .Build();
     }
 
-    public async Task<ApiResponseDTO<List<GetUserDTO>>> GetAllAsync()
+    public async Task<ApiResponseDTO<List<GetItemDTO>>> GetAllAsync()
     {
-        ApiResponseDTOBuilder<List<GetUserDTO>> builder = new ApiResponseDTOBuilder<List<GetUserDTO>>();
+        ApiResponseDTOBuilder<List<GetItemDTO>> builder = new ApiResponseDTOBuilder<List<GetItemDTO>>();
 
-        List<UserEntity> userEntities = await _userRepository.GetAllAsync();
-        return builder.SetData(userEntities.Select(ue => ue.ToDTO()).ToList())
+        List<ItemEntity> itemEntities = await _itemRepository.GetAllAsync();
+        return builder.SetData(itemEntities.Select(ue => ue.ToDTO()).ToList())
                       .SetSuccessful()
                       .Build();
     }
-
-    public async Task RemoveByIdAsync(Guid userId)
+    
+    public async Task<ApiResponseDTO<object?>> RemoveByIdAsync(Guid itemId)
     {
-        await _userRepository.RemoveByIdAsync(userId);
+        ApiResponseDTOBuilder<object?> builder = new ApiResponseDTOBuilder<object?>();
+        
+        await _itemRepository.RemoveByIdAsync(itemId);
+        return builder.SetData(null)
+                      .SetSuccessful()
+                      .Build();
     }
-    */
 }

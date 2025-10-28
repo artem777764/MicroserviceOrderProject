@@ -13,4 +13,14 @@ public static class ItemExtensions
             CategoryId = createItemDTO.CategoryId,
         };
     }
+
+    public static GetItemDTO ToDTO(this ItemEntity itemEntity)
+    {
+        return new GetItemDTO()
+        {
+            Id = itemEntity.Id,
+            Name = itemEntity.Name,
+            CategoryName = itemEntity.Category.Name,
+        };
+    }
 }

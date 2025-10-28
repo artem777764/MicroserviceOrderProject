@@ -22,4 +22,25 @@ public class ItemController : ControllerBase
         ApiResponseDTO<IdDTO> apiResponseDTO = await _itemService.CreateUserAsync(createItemDTO);
         return Ok(apiResponseDTO);
     }
+
+    [HttpGet("{itemId}")]
+    public async Task<IActionResult> GetItemByIdAsync([FromRoute] Guid itemId)
+    {
+        ApiResponseDTO<GetItemDTO> apiResponseDTOs = await _itemService.GetItemByIdAsync(itemId);
+        return Ok(apiResponseDTOs);
+    }
+
+    [HttpGet("")]
+    public async Task<IActionResult> GetItemsAsync()
+    {
+        ApiResponseDTO<List<GetItemDTO>> apiResponseDTOs = await _itemService.GetAllAsync();
+        return Ok(apiResponseDTOs);
+    }
+
+    [HttpDelete("{itemId}")]
+    public async Task<IActionResult> RemoveUserAsync([FromRoute] Guid itemId)
+    {
+        ApiResponseDTO<object?> apiResponseDTO = await _itemService.RemoveByIdAsync(itemId);
+        return Ok(apiResponseDTO);
+    }
 }
