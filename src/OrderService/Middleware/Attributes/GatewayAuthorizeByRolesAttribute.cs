@@ -29,7 +29,7 @@ public class GatewayAuthorizeByRolesAttribute : Attribute, IAuthorizationFilter
             return;
         }
 
-        List<string> userRoles = httpContext.Request.Headers["Gateway-User-Roles"].FirstOrDefault()?.Split(',').ToList() ?? new List<string>();
+        List<string> userRoles = httpContext.Request.Headers["Gateway-Active-Role-Name"].FirstOrDefault()?.Split(',').ToList() ?? new List<string>();
         bool hasRequiredRole = _requiredRoles.Any(requiredRole => userRoles.Contains(requiredRole));
         if (!hasRequiredRole)
         {

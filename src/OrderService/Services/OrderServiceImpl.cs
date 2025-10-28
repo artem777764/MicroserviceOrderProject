@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using OrderService.DTOs;
 using OrderService.DTOs.OrderDTOs;
 using OrderService.Extensions;
@@ -30,7 +28,7 @@ public class OrderServiceImpl : IOrderService
                                     .SetSuccessful()
                                     .Build();
     }
-    
+
     public async Task<ApiResponseDTO<GetOrderDTO>> GetOrderByIdAsync(Guid orderId)
     {
         ApiResponseDTOBuilder<GetOrderDTO> apiResponseDTOBuilder = new ApiResponseDTOBuilder<GetOrderDTO>();
@@ -43,6 +41,16 @@ public class OrderServiceImpl : IOrderService
         }
 
         return apiResponseDTOBuilder.SetData(orderEntity.ToDTO())
+                                    .SetSuccessful()
+                                    .Build();
+    }
+    
+    public async Task<ApiResponseDTO<List<GetOrderDTO>>> GetOrdersAsync(Guid? userId, int? pageSize, int? pageNumber)
+    {
+        ApiResponseDTOBuilder<List<GetOrderDTO>> apiResponseDTOBuilder = new ApiResponseDTOBuilder<List<GetOrderDTO>>();
+
+        List<OrderEntity> orderEntities = await _orderRepository.GetOrdersAsync(userId, pageSize, pageNumber);
+        return apiResponseDTOBuilder.SetData(orderEntities.Select(oe => oe.ToDTO()).ToList())
                                     .SetSuccessful()
                                     .Build();
     }

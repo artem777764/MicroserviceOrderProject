@@ -26,11 +26,27 @@ public class OrderRepository : IOrderRepository
         return _context.Orders.Include(o => o.OrderItems)
                               .ThenInclude(oi => oi.Item)
                               .ThenInclude(i => i.Category)
-                              .Include(o => o.Status);
+                              .Include(o => o.Status)
+                              .OrderByDescending(o => o.CreatedAt)
+                              .AsNoTracking();
     }
 
     public async Task<OrderEntity?> GetOrderByIdAsync(Guid orderId)
     {
         return await CreateBaseQuery().FirstOrDefaultAsync(o => o.Id == orderId);
+    }
+
+    public async Task<List<OrderEntity>> GetOrdersAsync(Guid? userId, int? pageSize, int? pageNumber)
+    {
+        IQueryable<OrderEntity> query = CreateBaseQuery();
+        if (userId != null) query = query.Where(o => o.UserId == userId);
+        if (pageSize != null && pageNumber != null)
+        {
+            int queryPageSize = pageSize.GetValueOrDefault();
+            int queryPageNumber = pageNumber.GetValueOrDefault();
+            query = query.Skip(queryPageSize * (queryPageNumber - 1)).Take(queryPageSize);
+        }
+
+        return await query.ToListAsync();
     }
 }

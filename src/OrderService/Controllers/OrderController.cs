@@ -31,4 +31,10 @@ public class OrderController : ControllerBase
     {
         return Ok(await _orderService.GetOrderByIdAsync(orderId));
     }
+
+    [HttpGet("")]
+    public async Task<IActionResult> GetOrdersAsync([FromQuery] Guid? userId, [FromQuery] int? pageSize, [FromQuery] int? PageNumber)
+    {
+        return Ok(await _orderService.GetOrdersAsync(userId, pageSize, PageNumber));
+    }
 }
