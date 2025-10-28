@@ -25,4 +25,10 @@ public class OrderController : ControllerBase
         ApiResponseDTO<IdDTO> apiResponseDTO = await _orderService.CreateOrderAsync(createOrderDTO, Guid.Parse(userId));
         return Ok(apiResponseDTO);
     }
+
+    [HttpGet("{orderId}")]
+    public async Task<IActionResult> GetOrderByIdAsync([FromRoute] Guid orderId)
+    {
+        return Ok(await _orderService.GetOrderByIdAsync(orderId));
+    }
 }

@@ -16,6 +16,12 @@ public static class ResponseErrors
         Message = "Товар не найден",
     };
 
+    public static ErrorDTO OrderNotFound() => new ErrorDTO
+    {
+        Code = "ORDER_NOT_FOUND",
+        Message = "Заказ не найден",
+    };
+
     public static ErrorDTO Unauthorized() => new ErrorDTO
     {
         Code = "UNAUTHORIZED",

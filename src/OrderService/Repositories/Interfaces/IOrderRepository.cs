@@ -5,4 +5,5 @@ namespace OrderService.Repositories.Interfaces;
 public interface IOrderRepository
 {
     Task<Guid> CreateOrderAsync(OrderEntity orderEntity);
+    Task<OrderEntity?> GetOrderByIdAsync(Guid orderId);
 }

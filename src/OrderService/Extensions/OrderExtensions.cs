@@ -24,4 +24,26 @@ public static class OrderExtensions
             Amount = createOrderItemsDTO.Amount,
         };
     }
+
+    public static GetOrderDTO ToDTO(this OrderEntity orderEntity)
+    {
+        return new GetOrderDTO()
+        {
+            Id = orderEntity.Id,
+            UserId = orderEntity.UserId,
+            StatusName = orderEntity.Status.Name,
+            CreatedAt = orderEntity.CreatedAt,
+            Items = orderEntity.OrderItems.Select(oi => oi.ToDTO()).ToList(),
+        };
+    }
+
+    public static GetOrderItemsDTO ToDTO(this OrderItemsEntity orderItemsEntity)
+    {
+        return new GetOrderItemsDTO()
+        {
+            Id = orderItemsEntity.Item.Id,
+            Name = orderItemsEntity.Item.Name,
+            CategoryName = orderItemsEntity.Item.Category.Name,
+        };
+    }
 }
