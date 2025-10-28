@@ -40,7 +40,7 @@ public class ItemController : ControllerBase
     [HttpDelete("{itemId}")]
     public async Task<IActionResult> RemoveUserAsync([FromRoute] Guid itemId)
     {
-        ApiResponseDTO<object?> apiResponseDTO = await _itemService.RemoveByIdAsync(itemId);
+        ApiResponseNoDataDTO apiResponseDTO = await _itemService.RemoveByIdAsync(itemId);
         return Ok(apiResponseDTO);
     }
 }

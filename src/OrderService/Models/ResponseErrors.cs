@@ -15,4 +15,16 @@ public static class ResponseErrors
         Code = "ITEM_NOT_FOUND",
         Message = "Товар не найден",
     };
+
+    public static ErrorDTO Unauthorized() => new ErrorDTO
+    {
+        Code = "UNAUTHORIZED",
+        Message = "Пользователь не авторизован",
+    };
+
+    public static ErrorDTO Forbidden() => new ErrorDTO
+    {
+        Code = "FORBIDDEN",
+        Message = "Пользователь не имеет необходимой роли",
+    };    
 }

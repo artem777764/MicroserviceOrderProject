@@ -2,6 +2,7 @@ using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Models;
 using OrderService.Models.Context;
+using OrderService.Repositories;
 using OrderService.Repositories.Interfaces;
 using OrderService.Services;
 using OrderService.Services.Interfaces;
@@ -39,8 +40,10 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IValidationService, ValidationService>();
 
         services.AddScoped<IItemRepository, ItemRepository>();
-        
+        services.AddScoped<IOrderRepository, OrderRepository>();
+
         services.AddScoped<IItemService, ItemService>();
+        services.AddScoped<IOrderService, OrderServiceImpl>();
 
         services.AddOpenApi();
 

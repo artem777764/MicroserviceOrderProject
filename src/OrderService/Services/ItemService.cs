@@ -63,13 +63,12 @@ public class ItemService : IItemService
                       .Build();
     }
     
-    public async Task<ApiResponseDTO<object?>> RemoveByIdAsync(Guid itemId)
+    public async Task<ApiResponseNoDataDTO> RemoveByIdAsync(Guid itemId)
     {
-        ApiResponseDTOBuilder<object?> builder = new ApiResponseDTOBuilder<object?>();
+        ApiResponseNoDataDTOBuilder builder = new ApiResponseNoDataDTOBuilder();
         
         await _itemRepository.RemoveByIdAsync(itemId);
-        return builder.SetData(null)
-                      .SetSuccessful()
+        return builder.SetSuccessful()
                       .Build();
     }
 }

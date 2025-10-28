@@ -1,0 +1,28 @@
+using Microsoft.AspNetCore.Mvc;
+using OrderService.DTOs;
+using OrderService.DTOs.ItemDTOs;
+using OrderService.DTOs.OrderDTOs;
+using OrderService.Services.Interfaces;
+
+namespace OrderService.Controllers;
+
+[ApiController]
+[Route("orders")]
+public class OrderController : ControllerBase
+{
+    private readonly IOrderService _orderService;
+
+    public OrderController(IOrderService orderService)
+    {
+        _orderService = orderService;
+    }
+
+    [HttpPost("")]
+    [GatewayAuthorizeByRoles("User")]
+    public async Task<IActionResult> CreateOrderAsync([FromBody] CreateOrderDTO createOrderDTO)
+    {
+        string userId = HttpContext.Request.Headers["Gateway-User-Id"].FirstOrDefault()!;
+        ApiResponseDTO<IdDTO> apiResponseDTO = await _orderService.CreateOrderAsync(createOrderDTO, Guid.Parse(userId));
+        return Ok(apiResponseDTO);
+    }
+}
