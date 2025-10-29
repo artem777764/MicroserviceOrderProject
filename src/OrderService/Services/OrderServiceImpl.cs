@@ -44,7 +44,7 @@ public class OrderServiceImpl : IOrderService
                                     .SetSuccessful()
                                     .Build();
     }
-    
+
     public async Task<ApiResponseDTO<List<GetOrderDTO>>> GetOrdersAsync(Guid? userId, int? pageSize, int? pageNumber)
     {
         ApiResponseDTOBuilder<List<GetOrderDTO>> apiResponseDTOBuilder = new ApiResponseDTOBuilder<List<GetOrderDTO>>();
@@ -53,5 +53,27 @@ public class OrderServiceImpl : IOrderService
         return apiResponseDTOBuilder.SetData(orderEntities.Select(oe => oe.ToDTO()).ToList())
                                     .SetSuccessful()
                                     .Build();
+    }
+    
+    public async Task<ApiResponseNoDataDTO> RemoveOrderAsync(Guid orderId, Guid userId)
+    {
+        ApiResponseNoDataDTOBuilder apiResponseNoDataDTOBuilder = new ApiResponseNoDataDTOBuilder();
+
+        OrderEntity? orderEntity = await _orderRepository.GetOrderByIdAsync(orderId);
+        if (orderEntity == null)
+        {
+            apiResponseNoDataDTOBuilder.SetError(ResponseErrors.OrderNotFound());
+            return apiResponseNoDataDTOBuilder.Build();
+        }
+
+        if (orderEntity.UserId != userId)
+        {
+            apiResponseNoDataDTOBuilder.SetError(ResponseErrors.Forbidden());
+            return apiResponseNoDataDTOBuilder.Build();
+        }
+
+        await _orderRepository.RemoveOrderAsync(orderEntity);
+        return apiResponseNoDataDTOBuilder.SetSuccessful()
+                                          .Build();
     }
 }

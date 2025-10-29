@@ -27,8 +27,7 @@ public class OrderRepository : IOrderRepository
                               .ThenInclude(oi => oi.Item)
                               .ThenInclude(i => i.Category)
                               .Include(o => o.Status)
-                              .OrderByDescending(o => o.CreatedAt)
-                              .AsNoTracking();
+                              .OrderByDescending(o => o.CreatedAt);
     }
 
     public async Task<OrderEntity?> GetOrderByIdAsync(Guid orderId)
@@ -47,6 +46,12 @@ public class OrderRepository : IOrderRepository
             query = query.Skip(queryPageSize * (queryPageNumber - 1)).Take(queryPageSize);
         }
 
-        return await query.ToListAsync();
+        return await query.AsNoTracking().ToListAsync();
+    }
+
+    public async Task RemoveOrderAsync(OrderEntity orderEntity)
+    {
+        _context.Orders.Remove(orderEntity);
+        await _context.SaveChangesAsync();
     }
 }

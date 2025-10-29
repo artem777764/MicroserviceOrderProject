@@ -37,4 +37,12 @@ public class OrderController : ControllerBase
     {
         return Ok(await _orderService.GetOrdersAsync(userId, pageSize, PageNumber));
     }
+
+    [HttpDelete("{orderId}")]
+    [GatewayAuthorize]
+    public async Task<IActionResult> RemoveOrderAsync([FromRoute] Guid orderId)
+    {
+        string userId = HttpContext.Request.Headers["Gateway-User-Id"].FirstOrDefault()!;
+        return Ok(await _orderService.RemoveOrderAsync(orderId, Guid.Parse(userId)));
+    }
 }

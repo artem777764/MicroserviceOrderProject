@@ -31,6 +31,6 @@ public static class ResponseErrors
     public static ErrorDTO Forbidden() => new ErrorDTO
     {
         Code = "FORBIDDEN",
-        Message = "Пользователь не имеет необходимой роли",
-    };    
+        Message = "Действие запрещено",
+    };
 }
