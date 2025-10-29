@@ -26,7 +26,7 @@ public class JwtService : IJwtService
         _jwtCookieName = options.Value.JwtCookieName;
     }
 
-    public string GenerateToken(UserEntity user, Guid? activeRoleId = null)
+    public string? GenerateToken(UserEntity user, Guid? activeRoleId = null)
     {
         List<Claim> claims = new List<Claim>
         {
@@ -38,6 +38,11 @@ public class JwtService : IJwtService
         {
             claims.Add(new Claim(ClaimTypes.Role, userRole.Role.Name ?? userRole.Role.Id.ToString()));
             claims.Add(new Claim("role_id", userRole.Role.Id.ToString()));
+        }
+
+        if (activeRoleId.HasValue && !user.UserRoles.Select(ur => ur.RoleId).ToList().Contains(activeRoleId.GetValueOrDefault()))
+        {
+            return null;
         }
 
         if (activeRoleId.HasValue)

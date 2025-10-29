@@ -39,9 +39,21 @@ public class UserServiceImpl : IUserService
             return builder.Build();
         }
 
+        if (await _userRepository.IsEmailExist(createUserDTO.Email))
+        {
+            builder.SetError(ResponseErrors.EmailIsBusy());
+            return builder.Build();
+        }
+
         if (!_validationService.IsValidLogin(createUserDTO.Login))
         {
             builder.SetError(ResponseErrors.UserLoginNotValid());
+            return builder.Build();
+        }
+
+        if (await _userRepository.IsLoginExist(createUserDTO.Login))
+        {
+            builder.SetError(ResponseErrors.LoginIsBusy());
             return builder.Build();
         }
 
@@ -79,8 +91,13 @@ public class UserServiceImpl : IUserService
             return apiResponseDTOBuilder.Build();
         }
 
-        string jwtToken = _jwtService.GenerateToken(userEntity);
+        string? jwtToken = _jwtService.GenerateToken(userEntity);
         string JwtCookieName = _jwtService.GetJwtCookieName();
+        if (jwtToken == null)
+        {
+            apiResponseDTOBuilder.SetError(ResponseErrors.Unauthorized());
+            return apiResponseDTOBuilder.Build();
+        }
 
         GetLoginUserDTO getLoginUserDTO = new GetLoginUserDTO()
         {
@@ -105,7 +122,12 @@ public class UserServiceImpl : IUserService
             return apiResponseDTOBuilder.Build();
         }
 
-        string jwtToken = _jwtService.GenerateToken(userEntity, roleId);
+        string? jwtToken = _jwtService.GenerateToken(userEntity, roleId);
+        if (jwtToken == null)
+        {
+            apiResponseDTOBuilder.SetError(ResponseErrors.Forbidden());
+            return apiResponseDTOBuilder.Build();
+        }
         string JwtCookieName = _jwtService.GetJwtCookieName();
 
         GetLoginUserDTO getLoginUserDTO = new GetLoginUserDTO()

@@ -10,10 +10,22 @@ public static class ResponseErrors
         Message = "Некорректная почта",
     };
 
+    public static ErrorDTO EmailIsBusy() => new ErrorDTO
+    {
+        Code = "EMAIL_IS_BUSY",
+        Message = "Почта занята",
+    };
+
     public static ErrorDTO UserLoginNotValid() => new ErrorDTO
     {
         Code = "USER_LOGIN_NOT_VALID",
         Message = "Некорректный логин",
+    };
+
+    public static ErrorDTO LoginIsBusy() => new ErrorDTO
+    {
+        Code = "LOGIN_IS_BUSY",
+        Message = "Логин занят",
     };
 
     public static ErrorDTO UserPasswordNotValid() => new ErrorDTO

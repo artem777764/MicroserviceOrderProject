@@ -1,3 +1,4 @@
+using UserService.DTOs;
 using UserService.DTOs.UserRoleDTOs;
 using UserService.Extensions;
 using UserService.Repositories.Interfaces;
@@ -14,13 +15,19 @@ public class UserRoleService : IUserRoleService
         _userRoleRepository = userRoleRepository;
     }
 
-    public async Task AppointRoleAsync(CreateUserRoleDTO createUserRoleDTO)
+    public async Task<ApiResponseNoDataDTO> AppointRoleAsync(CreateUserRoleDTO createUserRoleDTO)
     {
+        ApiResponseNoDataDTOBuilder apiResponseNoDataDTOBuilder = new ApiResponseNoDataDTOBuilder();
         await _userRoleRepository.AppointRoleAsync(createUserRoleDTO.ToEntity());
+        return apiResponseNoDataDTOBuilder.SetSuccessful()
+                                          .Build();
     }
 
-    public async Task RemoveRoleAsync(RemoveUserRoleDTO removeUserRoleDTO)
+    public async Task<ApiResponseNoDataDTO> RemoveRoleAsync(RemoveUserRoleDTO removeUserRoleDTO)
     {
+        ApiResponseNoDataDTOBuilder apiResponseNoDataDTOBuilder = new ApiResponseNoDataDTOBuilder();
         await _userRoleRepository.RemoveRoleAsync(removeUserRoleDTO.ToEntity());
+        return apiResponseNoDataDTOBuilder.SetSuccessful()
+                                          .Build();
     }
 }

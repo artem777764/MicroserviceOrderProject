@@ -19,15 +19,13 @@ public class UserRolesController : ControllerBase
     [GatewayAuthorizeByRoles("Admin")]
     public async Task<IActionResult> AppointRoleAsync([FromBody] CreateUserRoleDTO createUserRoleDTO)
     {
-        await _userRoleService.AppointRoleAsync(createUserRoleDTO);
-        return Ok();
+        return Ok(await _userRoleService.AppointRoleAsync(createUserRoleDTO));
     }
 
     [HttpDelete("remove")]
     [GatewayAuthorizeByRoles("Admin")]
     public async Task<IActionResult> RemoveRoleAsync([FromBody] RemoveUserRoleDTO removeUserRoleDTO)
     {
-        await _userRoleService.RemoveRoleAsync(removeUserRoleDTO);
-        return Ok();
+        return Ok(await _userRoleService.RemoveRoleAsync(removeUserRoleDTO));
     }
 }
