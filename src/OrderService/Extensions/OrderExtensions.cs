@@ -32,6 +32,12 @@ public static class OrderExtensions
         return oldOrderEntity;
     }
 
+    public static OrderEntity UpdateStatusIdWith(this OrderEntity orderEntity, Guid stutusId)
+    {
+        orderEntity.StatusId = stutusId;
+        return orderEntity;
+    }
+
     public static OrderItemsEntity ToEntity(this UpdateOrderItemsDTO updateOrderItemsDTO)
     {
         return new OrderItemsEntity()
