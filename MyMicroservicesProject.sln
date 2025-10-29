@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "src\UserServ
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "src\ApiGateway\ApiGateway.csproj", "{698201A3-809F-4276-A1FB-25A1908F1242}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderService", "src\OrderService\OrderService.csproj", "{75ADC89C-47DE-42BB-A27F-3A496A25F6CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,18 @@ Global
 		{698201A3-809F-4276-A1FB-25A1908F1242}.Release|x64.Build.0 = Release|Any CPU
 		{698201A3-809F-4276-A1FB-25A1908F1242}.Release|x86.ActiveCfg = Release|Any CPU
 		{698201A3-809F-4276-A1FB-25A1908F1242}.Release|x86.Build.0 = Release|Any CPU
+		{75ADC89C-47DE-42BB-A27F-3A496A25F6CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75ADC89C-47DE-42BB-A27F-3A496A25F6CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75ADC89C-47DE-42BB-A27F-3A496A25F6CA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{75ADC89C-47DE-42BB-A27F-3A496A25F6CA}.Debug|x64.Build.0 = Debug|Any CPU
+		{75ADC89C-47DE-42BB-A27F-3A496A25F6CA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{75ADC89C-47DE-42BB-A27F-3A496A25F6CA}.Debug|x86.Build.0 = Debug|Any CPU
+		{75ADC89C-47DE-42BB-A27F-3A496A25F6CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75ADC89C-47DE-42BB-A27F-3A496A25F6CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75ADC89C-47DE-42BB-A27F-3A496A25F6CA}.Release|x64.ActiveCfg = Release|Any CPU
+		{75ADC89C-47DE-42BB-A27F-3A496A25F6CA}.Release|x64.Build.0 = Release|Any CPU
+		{75ADC89C-47DE-42BB-A27F-3A496A25F6CA}.Release|x86.ActiveCfg = Release|Any CPU
+		{75ADC89C-47DE-42BB-A27F-3A496A25F6CA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,5 +64,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{64DC54E2-E0F7-4DB8-8163-D7D205AFD760} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{698201A3-809F-4276-A1FB-25A1908F1242} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{75ADC89C-47DE-42BB-A27F-3A496A25F6CA} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 EndGlobal

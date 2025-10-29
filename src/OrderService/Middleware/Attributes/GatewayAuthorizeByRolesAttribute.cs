@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using UserService.DTOs;
-using UserService.Models;
+using OrderService.DTOs;
+using OrderService.Models;
 
 public class GatewayAuthorizeByRolesAttribute : Attribute, IAuthorizationFilter
 {
