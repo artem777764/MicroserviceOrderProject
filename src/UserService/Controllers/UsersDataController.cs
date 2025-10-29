@@ -16,10 +16,11 @@ public class UsersDataController : ControllerBase
         _userDataService = userDataService;
     }
 
-    [HttpPost("{userId}")]
-    public async Task<IActionResult> CreateUserDataAsync([FromBody] CreateUserDataDTO createUserDataDTO, [FromRoute] Guid userId)
+    [HttpPost("")]
+    [GatewayAuthorize]
+    public async Task<IActionResult> CreateUserDataAsync([FromBody] CreateUserDataDTO createUserDataDTO)
     {
-        // ДОБАВИТЬ ID ИЗ JWT
-        return Ok(await _userDataService.CreateUserDataAsync(userId, createUserDataDTO));
+        string userId = HttpContext.Request.Headers["Gateway-User-Id"].FirstOrDefault()!;
+        return Ok(await _userDataService.CreateUserDataAsync(Guid.Parse(userId), createUserDataDTO));
     }
 }

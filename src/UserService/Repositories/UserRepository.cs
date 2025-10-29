@@ -59,10 +59,9 @@ public class UserRepository : IUserRepository
                              .AsNoTracking();
     }
 
-    public async Task RemoveByIdAsync(Guid userId)
+    public async Task RemoveByIdAsync(UserEntity userEntity)
     {
-        UserEntity? userEntity = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-        if (userEntity != null) _context.Users.Remove(userEntity);
+        _context.Users.Remove(userEntity);
         await _context.SaveChangesAsync();
     }
 }

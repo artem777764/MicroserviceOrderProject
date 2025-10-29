@@ -146,8 +146,18 @@ public class UserServiceImpl : IUserService
                       .Build();
     }
 
-    public async Task RemoveByIdAsync(Guid userId)
+    public async Task<ApiResponseNoDataDTO> RemoveByIdAsync(Guid userId)
     {
-        await _userRepository.RemoveByIdAsync(userId);
+        ApiResponseNoDataDTOBuilder apiResponseNoDataDTOBuilder = new ApiResponseNoDataDTOBuilder();
+
+        UserEntity? userEntity = await _userRepository.GetByIdAsync(userId);
+        if (userEntity == null)
+        {
+            apiResponseNoDataDTOBuilder.SetError(ResponseErrors.UserNotFound());
+            return apiResponseNoDataDTOBuilder.Build();
+        }
+
+        await _userRepository.RemoveByIdAsync(userEntity);
+        return apiResponseNoDataDTOBuilder.SetSuccessful().Build();
     }
 }

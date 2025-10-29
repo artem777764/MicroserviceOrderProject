@@ -43,8 +43,8 @@ public class UsersController : ControllerBase
         return Ok(apiResponseDTO);
     }
 
-    [GatewayAuthorize]
     [HttpPost("login/role")]
+    [GatewayAuthorize]
     public async Task<IActionResult> SetRoleAsync([FromQuery] Guid roleId)
     {
         string userId = HttpContext.Request.Headers["Gateway-User-Id"].FirstOrDefault()!;
@@ -60,22 +60,24 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{userId}")]
+    [GatewayAuthorize]
     public async Task<IActionResult> GetUserByIdAsync([FromRoute] Guid userId)
     {
         return Ok(await _userService.GetUserByIdAsync(userId));
     }
 
     [HttpGet("")]
+    [GatewayAuthorizeByRoles("Admin")]
     public async Task<IActionResult> GetUsersAsync()
     {
         return Ok(await _userService.GetAllAsync());
     }
 
     [HttpDelete("{id}")]
+    [GatewayAuthorizeByRoles("Admin")]
     public async Task<IActionResult> RemoveUserAsync([FromRoute] Guid id)
     {
-        await _userService.RemoveByIdAsync(id);
-        return Ok();
+        return Ok(await _userService.RemoveByIdAsync(id));
     }
 
     [HttpPost("logout")]
