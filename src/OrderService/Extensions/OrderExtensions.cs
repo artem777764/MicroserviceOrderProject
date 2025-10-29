@@ -25,6 +25,22 @@ public static class OrderExtensions
         };
     }
 
+    public static OrderEntity UpdateWith(this OrderEntity oldOrderEntity, UpdateOrderDTO newOrderEntity)
+    {
+        if (newOrderEntity.Items != null) oldOrderEntity.OrderItems = newOrderEntity.Items.Select(oe => oe.ToEntity()).ToList();
+        if (newOrderEntity.StatusId != null) oldOrderEntity.StatusId = newOrderEntity.StatusId.GetValueOrDefault();
+        return oldOrderEntity;
+    }
+
+    public static OrderItemsEntity ToEntity(this UpdateOrderItemsDTO updateOrderItemsDTO)
+    {
+        return new OrderItemsEntity()
+        {
+            ItemId = updateOrderItemsDTO.ItemId,
+            Amount = updateOrderItemsDTO.Amount,
+        };
+    }
+
     public static GetOrderDTO ToDTO(this OrderEntity orderEntity)
     {
         return new GetOrderDTO()
@@ -43,6 +59,7 @@ public static class OrderExtensions
         {
             Id = orderItemsEntity.Item.Id,
             Name = orderItemsEntity.Item.Name,
+            Amount = orderItemsEntity.Amount,
             CategoryName = orderItemsEntity.Item.Category.Name,
         };
     }

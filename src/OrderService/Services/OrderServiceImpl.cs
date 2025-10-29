@@ -55,6 +55,36 @@ public class OrderServiceImpl : IOrderService
                                     .Build();
     }
     
+    public async Task<ApiResponseDTO<IdDTO>> UpdateOrderAsync(Guid? userId, Guid orderId, UpdateOrderDTO updateOrderDTO)
+    {
+        ApiResponseDTOBuilder<IdDTO> apiResponseDTOBuilder = new ApiResponseDTOBuilder<IdDTO>();
+
+        OrderEntity? oldOrderEntity = await _orderRepository.GetOrderByIdAsync(orderId);
+        if (oldOrderEntity == null)
+        {
+            apiResponseDTOBuilder.SetError(ResponseErrors.OrderNotFound());
+            return apiResponseDTOBuilder.Build();
+        }
+
+        if (oldOrderEntity.UserId != userId)
+        {
+            apiResponseDTOBuilder.SetError(ResponseErrors.Forbidden());
+            return apiResponseDTOBuilder.Build();
+        }
+
+        Guid? foundOrderId = await _orderRepository.UpdateOrderAsync(oldOrderEntity.UpdateWith(updateOrderDTO));
+        if (foundOrderId == null)
+        {
+            apiResponseDTOBuilder.SetError(ResponseErrors.OrderNotFound());
+            return apiResponseDTOBuilder.Build();
+        }
+
+        IdDTO idDTO = new IdDTO { Id = foundOrderId.GetValueOrDefault() };
+        return apiResponseDTOBuilder.SetData(idDTO)
+                                    .SetSuccessful()
+                                    .Build();
+    }
+
     public async Task<ApiResponseNoDataDTO> RemoveOrderAsync(Guid orderId, Guid userId)
     {
         ApiResponseNoDataDTOBuilder apiResponseNoDataDTOBuilder = new ApiResponseNoDataDTOBuilder();

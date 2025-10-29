@@ -49,6 +49,16 @@ public class OrderRepository : IOrderRepository
         return await query.AsNoTracking().ToListAsync();
     }
 
+    public async Task<Guid?> UpdateOrderAsync(OrderEntity newOrderEntity)
+    {
+        OrderEntity? orderEntity = await GetOrderByIdAsync(newOrderEntity.Id);
+        if (orderEntity == null) return null;
+        
+        _context.Orders.Entry(orderEntity).CurrentValues.SetValues(newOrderEntity);
+        await _context.SaveChangesAsync();
+        return newOrderEntity.Id;
+    }
+
     public async Task RemoveOrderAsync(OrderEntity orderEntity)
     {
         _context.Orders.Remove(orderEntity);
