@@ -17,6 +17,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpPost("")]
+    [GatewayAuthorizeByRoles("Manager", "Admin")]
     public async Task<IActionResult> CreateItemAsync([FromBody] CreateItemDTO createItemDTO)
     {
         ApiResponseDTO<IdDTO> apiResponseDTO = await _itemService.CreateUserAsync(createItemDTO);
@@ -24,6 +25,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet("{itemId}")]
+    [GatewayAuthorize]
     public async Task<IActionResult> GetItemByIdAsync([FromRoute] Guid itemId)
     {
         ApiResponseDTO<GetItemDTO> apiResponseDTOs = await _itemService.GetItemByIdAsync(itemId);
@@ -31,6 +33,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpGet("")]
+    [GatewayAuthorize]
     public async Task<IActionResult> GetItemsAsync()
     {
         ApiResponseDTO<List<GetItemDTO>> apiResponseDTOs = await _itemService.GetAllAsync();
@@ -38,6 +41,7 @@ public class ItemController : ControllerBase
     }
 
     [HttpDelete("{itemId}")]
+    [GatewayAuthorizeByRoles("Manager", "Admin")]
     public async Task<IActionResult> RemoveUserAsync([FromRoute] Guid itemId)
     {
         ApiResponseNoDataDTO apiResponseDTO = await _itemService.RemoveByIdAsync(itemId);

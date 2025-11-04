@@ -18,7 +18,7 @@ public class OrderController : ControllerBase
     }
 
     [HttpPost("")]
-    [GatewayAuthorizeByRoles("User")]
+    [GatewayAuthorize]
     public async Task<IActionResult> CreateOrderAsync([FromBody] CreateOrderDTO createOrderDTO)
     {
         string userId = HttpContext.Request.Headers["Gateway-User-Id"].FirstOrDefault()!;
@@ -27,15 +27,17 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet("{orderId}")]
+    [GatewayAuthorize]
     public async Task<IActionResult> GetOrderByIdAsync([FromRoute] Guid orderId)
     {
         return Ok(await _orderService.GetOrderByIdAsync(orderId));
     }
 
     [HttpGet("")]
-    public async Task<IActionResult> GetOrdersAsync([FromQuery] Guid? userId, [FromQuery] int? pageSize, [FromQuery] int? PageNumber)
+    [GatewayAuthorize]
+    public async Task<IActionResult> GetOrdersAsync([FromQuery] Guid? userId, [FromQuery] int? pageSize, [FromQuery] int? pageNumber)
     {
-        return Ok(await _orderService.GetOrdersAsync(userId, pageSize, PageNumber));
+        return Ok(await _orderService.GetOrdersAsync(userId, pageSize, pageNumber));
     }
 
     [HttpPut("{orderId}")]
