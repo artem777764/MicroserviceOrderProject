@@ -1,9 +1,11 @@
-using Backend.Extensions;
+using ApiGateway.Extensions;
 using DotNetEnv;
 
 Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddOpenApi();
 
 builder.Services.AddApplicationServices(builder.Configuration);
 
