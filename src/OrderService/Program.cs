@@ -1,9 +1,9 @@
 using DotNetEnv;
 using OrderService.Extensions;
 
-Env.Load();
-
 var builder = WebApplication.CreateBuilder(args);
+
+Console.WriteLine($"-> {builder.Configuration.GetConnectionString("ApplicationDatabase")}");
 
 builder.Services.AddApplicationServices(builder.Configuration);
 

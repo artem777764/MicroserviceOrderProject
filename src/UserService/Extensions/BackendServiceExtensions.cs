@@ -16,9 +16,11 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configuration)
     {
+        string connectionString = configuration.GetConnectionString("ApplicationDatabase")!;
+
         services.AddDbContext<ApplicationDbContext>(opt =>
-            opt.UseNpgsql(Environment.GetEnvironmentVariable("ApplicationDatabaseConnection")!
-        ));
+            opt.UseNpgsql(connectionString)
+        );
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>

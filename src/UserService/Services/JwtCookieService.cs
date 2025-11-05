@@ -24,6 +24,7 @@ public class JwtCookieService
         {
             HttpOnly = true,
             Secure = true,
+            SameSite = SameSiteMode.None,
             Path = "/",
             Expires = expires,
         };
